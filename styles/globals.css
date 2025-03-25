@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply font-montserrat bg-[#D2CDC9] text-[#5C5C5C];
+}
