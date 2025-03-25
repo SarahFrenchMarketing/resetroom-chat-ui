@@ -1,39 +1,50 @@
-return (
-  <div className="bg-[#D2CDC9] text-[#5C5C5C] font-[Montserrat] min-h-screen flex flex-col items-center justify-center px-4 py-10">
-    <div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-6 flex flex-col min-h-[600px]">
-      <h1 className="text-4xl font-[Anton] mb-6 text-center">The Reset Room</h1>
+import { useState } from 'react';
 
-      <div className="flex-1 overflow-y-auto space-y-4 pr-1">
+export default function ResetRoomChat() {
+  const [input, setInput] = useState('');
+  const [messages, setMessages] = useState([]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+
+    const newMessages = [...messages, { role: 'user', content: input }];
+    setMessages(newMessages);
+    setInput('');
+
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: newMessages }),
+    });
+
+    const data = await response.json();
+    setMessages([...newMessages, data]);
+  };
+
+  return (
+    <div className="w-full max-w-xl">
+      <div className="border rounded-md bg-white shadow-md p-4 mb-4 h-60 overflow-y-auto">
         {messages.map((msg, i) => (
-          <div
-            key={i}
-            className={`rounded-2xl px-4 py-3 max-w-[80%] leading-snug tracking-wide shadow-sm ${
-              msg.role === "user"
-                ? "bg-[#5C5C5C] text-white self-end rounded-br-none ml-auto"
-                : "bg-[#F6F4F2] text-[#5C5C5C] self-start rounded-bl-none"
-            }`}
-          >
-            {msg.content}
+          <div key={i} className={`mb-2 ${msg.role === 'user' ? 'text-right' : 'text-left'}`}>
+            <span className="block px-2 py-1 rounded bg-gray-100">{msg.content}</span>
           </div>
         ))}
-        {loading && <div className="italic text-sm text-center">Thinking...</div>}
       </div>
-
-      <form onSubmit={sendMessage} className="mt-6 flex">
+      <form onSubmit={handleSubmit} className="flex gap-2">
         <input
-          type="text"
+          className="flex-1 border p-2 rounded"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Ask me anything..."
-          className="flex-1 border border-[#ccc] rounded-l-xl px-4 py-3 focus:outline-none bg-[#F9F9F9]"
         />
         <button
           type="submit"
-          className="bg-[#5C5C5C] text-white px-6 py-3 rounded-r-xl font-semibold hover:bg-[#4b4b4b] transition"
+          className="bg-[#5C5C5C] text-white px-4 py-2 rounded hover:bg-gray-700"
         >
           Send
         </button>
       </form>
     </div>
-  </div>
-);
+  );
+}
