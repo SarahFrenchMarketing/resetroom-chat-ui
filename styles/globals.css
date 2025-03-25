@@ -1,86 +1,79 @@
-body {
-  font-family: 'Montserrat', sans-serif;
-  background-color: #D2CDC9;
-  color: #5C5C5C;
-  margin: 0;
-  padding: 0;
+.chat-wrapper {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  max-width: 800px;
+  width: 100%;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  flex-direction: column;
+  margin: 40px auto;
+  font-family: 'Montserrat', sans-serif;
 }
 
 h1 {
   font-family: 'Anton', sans-serif;
-  font-size: 3rem;
-  text-align: center;
-  margin-bottom: 0.5rem;
   color: #5C5C5C;
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 2.5rem;
 }
 
-p {
+.subtitle {
+  text-align: center;
+  margin-bottom: 20px;
   font-size: 1.1rem;
-  text-align: center;
-  margin-bottom: 2rem;
   color: #5C5C5C;
 }
 
-.chat-container {
-  background: white;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-  border-radius: 16px;
-  padding: 2rem;
-  width: 90%;
-  max-width: 700px;
-  height: 75vh;
-  overflow-y: auto;
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.suggestions button {
+  background-color: #5C5C5C;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.chat-box {
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
 }
 
 .message {
-  margin-bottom: 1rem;
+  max-width: 80%;
+  padding: 12px;
   font-size: 1rem;
   line-height: 1.5;
 }
 
-.user-message {
-  text-align: right;
-  font-weight: 500;
-}
-
-.assistant-message {
-  text-align: left;
-  background: #f6f6f6;
-  border-radius: 12px;
-  padding: 1rem;
-}
-
-.input-area {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
-
-input[type="text"] {
-  flex-grow: 1;
-  padding: 1rem;
-  border-radius: 10px;
+.input {
+  flex: 1;
+  border-radius: 8px;
   border: 1px solid #ccc;
+  padding: 10px;
+  resize: none;
   font-size: 1rem;
+  width: 100%;
 }
 
-button {
+.send-button {
   background-color: #5C5C5C;
   color: white;
   border: none;
-  border-radius: 10px;
-  padding: 0 1.5rem;
-  font-size: 1rem;
+  padding: 10px 16px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background 0.2s ease-in-out;
-}
-
-button:hover {
-  background-color: #4a4a4a;
 }
