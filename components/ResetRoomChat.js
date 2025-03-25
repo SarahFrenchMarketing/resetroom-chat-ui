@@ -1,171 +1,109 @@
-// components/ResetRoomChat.js
-import React, { useState } from 'react';
+import { useState } from 'react';
 
-const exampleQuestions = [
-  "How do I start affiliate marketing?",
-  "Can you help me find my niche?",
-  "How do I make money with content?",
-  "What’s the first step to build confidence?",
-  "How do I schedule my content like Sarah?"
+const starterQuestions = [
+  "How do I start making money online?",
+  "Can you help me build confidence?",
+  "What is affiliate marketing?",
+  "How do I grow on social media?"
 ];
 
-const ResetRoomChat = () => {
+export default function ResetRoomChat() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const sendMessage = async (e) => {
-    e.preventDefault();
-    if (!input.trim()) return;
-
-    const newMessages = [...messages, { sender: 'user', text: input }];
+  const sendMessage = async (message) => {
+    if (!message) return;
+    const newMessages = [...messages, { role: 'user', content: message }];
     setMessages(newMessages);
     setInput('');
+    setLoading(true);
 
-    const response = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: newMessages })
-    });
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: newMessages }),
+      });
 
-    const data = await response.json();
-    setMessages([...newMessages, { sender: 'assistant', text: data.reply }]);
+      const data = await res.json();
+      setMessages([...newMessages, { role: 'assistant', content: data.content }]);
+    } catch (err) {
+      console.error(err);
+      setMessages([...newMessages, { role: 'assistant', content: "Something went wrong. Please try again." }]);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleSuggestionClick = (text) => {
-    setInput(text);
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage(input);
+    }
   };
 
   return (
-    <div style={styles.container}>
-      <h1 style={styles.heading}>The Reset Room</h1>
-      <p style={styles.subheading}>Hi! I'm The Reset Room Assistant. Ready to guide you! Ask me anything…</p>
-
-      <div style={styles.chatBox}>
-        {messages.map((msg, i) => (
-          <div key={i} style={msg.sender === 'user' ? styles.userMessage : styles.assistantMessage}>
-            {msg.text}
-          </div>
-        ))}
-      </div>
-
-      {messages.length === 0 && (
-        <div style={styles.promptContainer}>
-          <p style={styles.promptHeader}>You can start with any of these, or ask anything else you need ✨</p>
-          <div style={styles.promptButtons}>
-            {exampleQuestions.map((q, i) => (
-              <button key={i} onClick={() => handleSuggestionClick(q)} style={styles.promptButton}>
+    <div className="min-h-screen bg-[#D2CDC9] flex items-center justify-center px-4 py-8">
+      <div className="bg-white shadow-2xl rounded-xl w-full max-w-3xl flex flex-col p-6 space-y-4">
+        <div className="space-y-2">
+          <p className="text-center text-gray-600 text-base">
+            You can start with one of these or ask me anything 💬
+          </p>
+          <div className="flex flex-wrap justify-center gap-2">
+            {starterQuestions.map((q, i) => (
+              <button
+                key={i}
+                onClick={() => sendMessage(q)}
+                className="bg-gray-100 hover:bg-gray-200 text-sm px-4 py-2 rounded-full transition"
+              >
                 {q}
               </button>
             ))}
           </div>
         </div>
-      )}
 
-      <form onSubmit={sendMessage} style={styles.inputForm}>
-        <input
-          style={styles.input}
-          value={input}
-          placeholder="Ask me anything..."
-          onChange={(e) => setInput(e.target.value)}
-        />
-        <button type="submit" style={styles.sendButton}>Send</button>
-      </form>
+        <div className="flex-1 max-h-[400px] overflow-y-auto border border-gray-200 rounded-md p-4 bg-gray-50 space-y-4">
+          {messages.map((msg, i) => (
+            <div
+              key={i}
+              className={`whitespace-pre-line ${
+                msg.role === 'user' ? 'text-right text-gray-800' : 'text-left text-gray-700'
+              }`}
+            >
+              <p className={`inline-block px-4 py-3 rounded-lg ${
+                msg.role === 'user' ? 'bg-blue-100' : 'bg-gray-200'
+              }`}>
+                {msg.content}
+              </p>
+            </div>
+          ))}
+          {loading && <div className="text-left text-gray-400 italic animate-pulse">Typing…</div>}
+        </div>
+
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            sendMessage(input);
+          }}
+          className="flex items-center border rounded-lg overflow-hidden"
+        >
+          <textarea
+            rows={1}
+            placeholder="Type your message..."
+            className="flex-grow resize-none px-4 py-3 text-sm focus:outline-none"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+          />
+          <button
+            type="submit"
+            className="bg-[#5C5C5C] hover:bg-black text-white px-5 py-3 text-sm"
+          >
+            Send
+          </button>
+        </form>
+      </div>
     </div>
   );
-};
-
-const styles = {
-  container: {
-    fontFamily: "'Montserrat', sans-serif",
-    backgroundColor: '#D2CDC9',
-    minHeight: '100vh',
-    padding: '40px 20px',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    color: '#5C5C5C',
-  },
-  heading: {
-    fontFamily: "'Anton', sans-serif",
-    fontSize: '42px',
-    marginBottom: '10px',
-    color: '#5C5C5C',
-  },
-  subheading: {
-    fontSize: '18px',
-    marginBottom: '30px',
-    textAlign: 'center',
-    maxWidth: '600px',
-  },
-  chatBox: {
-    width: '100%',
-    maxWidth: '700px',
-    minHeight: '280px',
-    backgroundColor: '#fff',
-    borderRadius: '12px',
-    padding: '20px',
-    marginBottom: '25px',
-    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.1)',
-    overflowY: 'auto',
-  },
-  userMessage: {
-    textAlign: 'right',
-    padding: '10px',
-    marginBottom: '8px',
-    backgroundColor: '#f0f0f0',
-    borderRadius: '8px',
-  },
-  assistantMessage: {
-    textAlign: 'left',
-    padding: '10px',
-    marginBottom: '8px',
-    backgroundColor: '#efefef',
-    borderRadius: '8px',
-  },
-  promptContainer: {
-    maxWidth: '700px',
-    textAlign: 'center',
-    marginBottom: '30px',
-  },
-  promptHeader: {
-    marginBottom: '12px',
-    fontWeight: 'bold',
-  },
-  promptButtons: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: '10px',
-    justifyContent: 'center',
-  },
-  promptButton: {
-    padding: '10px 16px',
-    backgroundColor: '#5C5C5C',
-    color: 'white',
-    border: 'none',
-    borderRadius: '6px',
-    cursor: 'pointer',
-    fontSize: '14px',
-  },
-  inputForm: {
-    display: 'flex',
-    maxWidth: '700px',
-    width: '100%',
-  },
-  input: {
-    flex: 1,
-    padding: '12px',
-    borderRadius: '6px 0 0 6px',
-    border: '1px solid #ccc',
-    fontSize: '16px',
-  },
-  sendButton: {
-    padding: '12px 20px',
-    backgroundColor: '#5C5C5C',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '0 6px 6px 0',
-    cursor: 'pointer',
-  }
-};
-
-export default ResetRoomChat;
+}
