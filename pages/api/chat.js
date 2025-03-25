@@ -1,11 +1,3 @@
-// pages/api/chat.js
-
-import { OpenAI } from 'openai';
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -43,20 +35,20 @@ You always guide users through the 3-step journey:
 
 STEP 1: Ask if they want to start with The Reset eBook.  
 If yes, collect their first name and email in a warm, supportive way  
-(e.g. “What’s your first name and email so I can send it to you personally 💌?”),  
+(e.g. “What’s your first name and email so I can send it to you personally?”),  
 then call the submitResetEmail action. Confirm it was submitted and tell them to check their inbox.
 
 STEP 2: Introduce the Digital Wealth Academy (DWA) — the non-negotiable foundation for clarity, confidence, and long-term income. This is where the real transformation begins.  
-📘 Affiliate link: https://stan.store/affiliates/59471c71-60f9-4679-bb25-05178d88af05
+Affiliate link: https://stan.store/affiliates/59471c71-60f9-4679-bb25-05178d88af05
 
 STEP 3: Show them Funnels of Course (FOC) — the all-in-one platform that powers and automates their entire business: funnels, scheduling, courses, automation, email, and more.  
-💻 Affiliate link: https://funnelsofcourse.com/foc-home?am_id=sarahfrench
+Affiliate link: https://funnelsofcourse.com/foc-home?am_id=sarahfrench
 
 Be clear:  
-✅ DWA + FOC = the power couple of digital business.  
-✅ DWA teaches the mindset and marketing strategy.  
-✅ FOC gives the tech, tools, and automation to launch and scale.  
-✅ Together, they make the perfect 2-step setup for affiliate success.
+DWA + FOC = the power couple of digital business.  
+DWA teaches the mindset and marketing strategy.  
+FOC gives the tech, tools, and automation to launch and scale.  
+Together, they make the perfect 2-step setup for affiliate success.
 
 You explain affiliate marketing in a way that clicks:  
 - It’s how you earn money by recommending tools and products  
@@ -76,46 +68,30 @@ Use emojis and make it girly.
 Make it easy to understand so they don’t get overwhelmed.  
 Simple terms, simple language.
 `;
-
+  
   try {
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4',
-      messages: [
-        { role: 'system', content: systemPrompt },
-        ...messages,
-      ],
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: 'gpt-3.5-turbo',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          ...messages,
+        ],
+      }),
     });
 
-    const assistantMessage = completion.choices[0]?.message?.content;
+    const data = await response.json();
+    const assistantReply = data.choices?.[0]?.message?.content;
 
-    // Check if we should trigger webhook
-    if (assistantMessage?.toLowerCase().includes('submitresetemail')) {
-      const { name, email } = extractNameEmail(messages);
-
-      if (name && email) {
-        await fetch('https://services.leadconnectorhq.com/hooks/cuZXf24WqjCTNZjZDZ0C/webhook-trigger/6b271e09-ac60-40b6-a269-4e21f6839172', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, email }),
-        });
-      }
-    }
-
-    res.status(200).json({ role: 'assistant', content: assistantMessage });
+    return res.status(200).json({ role: 'assistant', content: assistantReply });
   } catch (error) {
-    console.error('OpenAI Error:', error);
-    res.status(500).json({ error: 'Sorry, I couldn’t respond. Try again.' });
+    console.error('Chat error:', error);
+    return res.status(500).json({ error: 'Something went wrong.' });
   }
 }
 
-// Helper to extract name/email from user input
-function extractNameEmail(messages) {
-  const userInput = messages?.slice().reverse().find(m => m.role === 'user')?.content || '';
-  const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
-  const nameMatch = userInput.match(/my name is (\w+)/i);
-  const emailMatch = userInput.match(emailRegex);
-  return {
-    name: nameMatch ? nameMatch[1] : '',
-    email: emailMatch ? emailMatch[0] : '',
-  };
-}
