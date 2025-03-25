@@ -1,8 +1,17 @@
-"dependencies": {
-  "next": "latest",
-  "react": "latest",
-  "react-dom": "latest",
-  "tailwindcss": "^3.4.1",
-  "autoprefixer": "^10.4.15",
-  "postcss": "^8.4.24"
+{
+  "name": "resetroom-chat-ui",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "tailwindcss": "^3.4.1",
+    "autoprefixer": "^10.4.15",
+    "postcss": "^8.4.24"
+  }
 }
