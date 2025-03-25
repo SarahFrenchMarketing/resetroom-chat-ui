@@ -55,7 +55,8 @@ export default function Home() {
 
       <p style="font-size: 0.75rem; color: #777; text-align: center; margin-top: 20px;">
         This chat does not store your conversation. Please save important info elsewhere. Responses may not be 100% accurate and may contain affiliate links.
-      </p>
+    </p>
     </div>
   </>
 );
+}
