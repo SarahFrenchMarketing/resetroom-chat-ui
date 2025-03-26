@@ -1,4 +1,3 @@
-// pages/api/chat.js
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Only POST requests allowed' });
@@ -29,7 +28,7 @@ Then POST to this webhook:
 https://services.leadconnectorhq.com/hooks/cuZXf24WqjCTNZjZDZ0C/webhook-trigger/6b271e09-ac60-40b6-a269-4e21f6839172
 
 After submission, confirm with:
-"Sent! Check your inbox for The Reset eBook and let me know what you think 📘✨"
+"Sent! Check your inbox (and your spam folder just in case) for The Reset eBook 💌 Let me know if you have any trouble finding it!"
 
 You can gently introduce:
 1. Digital Wealth Academy (DWA) — for confidence and affiliate marketing: https://stan.store/affiliates/59471c71-60f9-4679-bb25-05178d88af05
@@ -40,6 +39,32 @@ Tone: always friendly, never overwhelming. Use simple terms. Use UK English. Inc
   };
 
   const chatMessages = [systemMessage, ...messages];
+
+  const userMessage = messages[messages.length - 1]?.content;
+  const emailRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/;
+  const emailMatch = userMessage?.match(emailRegex);
+
+  if (emailMatch) {
+    const email = emailMatch[0];
+    const nameGuess = userMessage.split(email)[0].trim().split(' ').slice(0, 2).join(' ');
+
+    try {
+      await fetch('https://services.leadconnectorhq.com/hooks/cuZXf24WqjCTNZjZDZ0C/webhook-trigger/6b271e09-ac60-40b6-a269-4e21f6839172', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ firstName: nameGuess || 'Friend', email }),
+      });
+
+      console.log('✅ Webhook sent successfully');
+
+      return res.status(200).json({
+        role: 'assistant',
+        content: `Sent! Check your inbox (and your spam folder just in case) for *The Reset eBook* 💌 Let me know if you have any trouble finding it!`,
+      });
+    } catch (error) {
+      console.error('❌ Webhook failed:', error);
+    }
+  }
 
   try {
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -59,7 +84,7 @@ Tone: always friendly, never overwhelming. Use simple terms. Use UK English. Inc
 
     res.status(200).json({ role: 'assistant', content: reply });
   } catch (error) {
-    console.error('Chat error:', error);
+    console.error('❌ Chat error:', error);
     res.status(500).json({ error: 'Something went wrong while chatting.' });
   }
 }
