@@ -1,127 +1,135 @@
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500&display=swap');
-
 body {
   margin: 0;
-  padding: 0;
+  padding: 40px 0;
   background-color: #D2CDC9;
   font-family: 'Montserrat', sans-serif;
   display: flex;
   justify-content: center;
-  min-height: 100vh;
+  color: #5C5C5C;
 }
 
 .chatContainer {
   background: white;
-  max-width: 800px;
   width: 100%;
-  padding: 40px;
-  margin: 40px 20px;
+  max-width: 800px;
   border-radius: 16px;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.05);
+  padding: 40px 30px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  justify-content: space-between;
+  min-height: 80vh;
+}
+
+.chatBox {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .title {
   font-family: 'Anton', sans-serif;
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   text-align: center;
-  margin-bottom: 10px;
   color: #5C5C5C;
+  margin-bottom: 10px;
 }
 
 .subtitle {
-  font-size: 1rem;
   text-align: center;
+  font-size: 1rem;
   color: #5C5C5C;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
-.suggestions {
+.suggestions-container {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
   justify-content: center;
-  margin-bottom: 24px;
+  margin-bottom: 25px;
 }
 
-.suggestions button {
-  background-color: #5C5C5C;
-  color: white;
-  padding: 10px 18px;
-  border-radius: 20px;
-  border: none;
-  font-size: 0.85rem;
+.suggestion-button {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 0.9rem;
+  color: #333;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
-.suggestions button:hover {
-  background-color: #4a4a4a;
+.suggestion-button:hover {
+  background: #f4f4f4;
 }
 
 .messages {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  margin-bottom: 30px;
+  gap: 12px;
+  flex-grow: 1;
+  margin-bottom: 20px;
   font-size: 0.95rem;
-  line-height: 1.5;
 }
 
 .userMessage {
   align-self: flex-end;
-  background-color: #C6D3DB;
+  background: #e6f0fa;
   padding: 12px 16px;
-  border-radius: 18px;
+  border-radius: 12px;
   max-width: 80%;
-  color: #000;
-  font-weight: 500;
-  border: 2px solid #5C5C5C; /* updated border to match your brand */
+  font-size: 0.95rem;
+  white-space: pre-line;
 }
 
 .assistantMessage {
   align-self: flex-start;
-  background-color: #f1f1f1;
+  background: #f1f1f1;
   padding: 12px 16px;
-  border-radius: 18px;
-  max-width: 80%;
-  color: #333;
-}
-
-.formRow {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  margin-top: auto;
-}
-
-.formRow input {
-  flex: 1;
-  padding: 12px;
   border-radius: 12px;
-  border: 1px solid #ccc;
+  max-width: 80%;
   font-size: 0.95rem;
+  white-space: pre-line;
 }
 
-.formRow button {
-  padding: 12px 16px;
+.inputRow {
+  display: flex;
+  margin-top: auto;
+  gap: 10px;
+}
+
+.chatInput {
+  flex-grow: 1;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 12px;
+  font-size: 0.95rem;
+  resize: none;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.sendButton {
   background-color: #5C5C5C;
   color: white;
   border: none;
   border-radius: 12px;
+  padding: 12px 18px;
   font-size: 0.95rem;
   cursor: pointer;
+  transition: background 0.2s ease;
 }
 
-.formRow button:hover {
-  background-color: #444;
+.sendButton:hover {
+  background-color: #4a4a4a;
 }
 
 .disclaimer {
-  font-size: 0.75rem;
-  color: #666;
   margin-top: 20px;
+  font-size: 0.75rem;
   text-align: center;
+  color: #888;
+  line-height: 1.4;
 }
