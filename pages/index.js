@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import Head from 'next/head';
+import '../styles/globals.css';
 
 export default function Home() {
   const [messages, setMessages] = useState([]);
@@ -8,51 +9,40 @@ export default function Home() {
   const chatEndRef = useRef(null);
 
   const suggestions = [
-    'How do I start making money online?',
-    'Can you help me build confidence?',
-    'What is affiliate marketing?',
-    'How do I grow on social media?',
+    'I feel stuck — where do I even start?',
+    "I’m ready to create digital income but don’t know my niche",
+    'Can you help me write a caption like @officialsarahfrench?',
+    'How do I use Funnels of Course with DWA?',
   ];
 
-  const scrollToBottom = () => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   useEffect(() => {
-    scrollToBottom();
+    if (chatEndRef.current) {
+      chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   }, [messages]);
 
-  const handleSuggestion = (text) => {
-    setInput(text);
-    sendMessage(text);
-  };
+  const handleSend = async () => {
+    if (!input.trim()) return;
 
-  const sendMessage = async (message) => {
-    if (!message.trim()) return;
-    const newMessages = [...messages, { role: 'user', content: message }];
+    const newMessages = [...messages, { role: 'user', content: input }];
     setMessages(newMessages);
     setInput('');
     setLoading(true);
 
-    try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: newMessages }),
-      });
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: newMessages }),
+    });
 
-      const data = await res.json();
-      setMessages([...newMessages, data]);
-    } catch (error) {
-      console.error('Error:', error);
-    } finally {
-      setLoading(false);
-    }
+    const data = await res.json();
+    setMessages([...newMessages, data]);
+    setLoading(false);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    sendMessage(input);
+  const handleSuggestion = (text) => {
+    setInput(text);
+    handleSend();
   };
 
   return (
@@ -61,55 +51,45 @@ export default function Home() {
         <title>The Reset Room</title>
       </Head>
 
-      <main className="chatContainer">
-        <div className="chatBox">
+      <main className="container">
+        <div className="chat-box">
           <h1 className="title">The Reset Room</h1>
-          <p className="subtitle">
-            You can start with one of these or ask me anything 💬
-          </p>
+          <p className="subtitle">You can start with one of these or ask me anything 🤍</p>
 
           <div className="suggestions">
             {suggestions.map((text, idx) => (
-              <button key={idx} className="suggestionButton" onClick={() => handleSuggestion(text)}>
+              <button key={idx} onClick={() => handleSuggestion(text)} className="suggestion-button">
                 {text}
               </button>
             ))}
           </div>
 
-          <div className="messages">
+          <div className="chat-messages">
             {messages.map((msg, i) => (
               <div
                 key={i}
-                className={msg.role === 'user' ? 'userMessage' : 'assistantMessage'}
+                className={msg.role === 'user' ? 'user-msg' : 'bot-msg'}
               >
-                {msg.content.split('\n').map((line, idx) => (
-                  <p key={idx}>{line}</p>
-                ))}
+                {msg.content}
               </div>
             ))}
-            {loading && (
-              <div className="assistantMessage">
-                <p>Typing...</p>
-              </div>
-            )}
+            {loading && <div className="bot-msg">Typing...</div>}
             <div ref={chatEndRef} />
           </div>
 
-          <form onSubmit={handleSubmit} className="inputForm">
+          <div className="input-row">
             <input
               type="text"
               placeholder="Ask me anything"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              className="chatInput"
+              onKeyDown={(e) => e.key === 'Enter' && handleSend()}
             />
-            <button type="submit" className="sendButton">Send</button>
-          </form>
+            <button onClick={handleSend}>Send</button>
+          </div>
 
           <p className="disclaimer">
-            This chat does not store your conversation. Please save anything important.
-            Responses may be inaccurate and may contain affiliate links.
-            Check your spam folder if you request the eBook.
+            This chat does not store your conversation. Please save anything important. Responses may be inaccurate and may contain affiliate links. Check your spam folder if you request the eBook.
           </p>
         </div>
       </main>
