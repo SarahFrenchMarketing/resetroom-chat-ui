@@ -52,26 +52,26 @@ export default function Home() {
       <Head>
         <title>The Reset Room</title>
       </Head>
-      <main className={styles.chatContainer}>
-        <div className={styles.chatBox}>
-          <h1 className={styles.title}>The Reset Room</h1>
-          <p className={styles.subtitle}>
+      <main className={chatContainer}>
+        <div className={chatBox}>
+          <h1 className={title}>The Reset Room</h1>
+          <p className={subtitle}>
             You can start with one of these or ask me anything 💬
           </p>
-          <div className={styles.suggestions}>
+          <div className={suggestions}>
             {suggestions.map((text, idx) => (
               <button key={idx} onClick={() => handleSuggestion(text)}>{text}</button>
             ))}
           </div>
 
-          <div className={styles.messages}>
+          <div className={messages}>
             {messages.map((msg, i) => (
               <div
                 key={i}
                 className={
                   msg.role === 'user'
-                    ? styles.userMessage
-                    : styles.assistantMessage
+                    ? userMessage
+                    : assistantMessage
                 }
               >
                 {msg.content}
@@ -80,18 +80,18 @@ export default function Home() {
             <div ref={chatEndRef} />
           </div>
 
-          <form onSubmit={handleSend} className={styles.form}>
+          <form onSubmit={handleSend} className={form}>
             <textarea
               rows={1}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask anything..."
-              className={styles.input}
+              className={input}
             />
-            <button type="submit" className={styles.send}>Send</button>
+            <button type="submit" className={send}>Send</button>
           </form>
 
-          <p className={styles.disclaimer}>
+          <p className={disclaimer}>
             This chat does not store your conversation. Please save anything important.
             Responses may be inaccurate and may contain affiliate links.
           </p>
