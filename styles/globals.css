@@ -1,115 +1,133 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Montserrat', sans-serif;
+  background: #F7F7F8;
+}
+
 .chatContainer {
-  background: #f7f7f8;
   min-height: 100vh;
-  padding: 40px 0;
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  padding: 40px 20px;
+  background: #F7F7F8;
 }
 
 .chatBox {
   background: white;
   border-radius: 12px;
-  padding: 30px;
-  width: 100%;
-  max-width: 700px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 720px;
   display: flex;
   flex-direction: column;
+  padding: 30px;
 }
 
 .title {
   font-family: 'Anton', sans-serif;
   font-size: 2.5rem;
-  color: #5c5c5c;
   text-align: center;
+  color: #333;
   margin-bottom: 10px;
 }
 
 .subtitle {
   text-align: center;
-  color: #888;
-  font-size: 1rem;
+  color: #666;
+  font-size: 1.1rem;
   margin-bottom: 20px;
 }
 
 .suggestions {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
   justify-content: center;
   margin-bottom: 20px;
 }
 
 .suggestions button {
-  background: #f0f0f0;
+  background-color: #5C5C5C;
+  color: white;
   border: none;
-  padding: 10px 15px;
   border-radius: 20px;
-  font-size: 0.9rem;
+  padding: 10px 16px;
+  font-size: 0.95rem;
   cursor: pointer;
-  transition: 0.2s;
+  transition: background 0.3s ease;
 }
 
 .suggestions button:hover {
-  background: #e0e0e0;
+  background-color: #4a4a4a;
 }
 
 .messages {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  min-height: 200px;
+  gap: 16px;
   margin-bottom: 20px;
-  max-height: 300px;
+  padding: 10px 0;
+  max-height: 400px;
   overflow-y: auto;
-}
-
-.userMessage,
-.assistantMessage {
-  padding: 12px 16px;
-  border-radius: 12px;
-  max-width: 80%;
-  line-height: 1.5;
-  white-space: pre-wrap;
 }
 
 .userMessage {
   align-self: flex-end;
-  background-color: #d1d1d1;
+  background: #DCF1FF;
+  color: #222;
+  padding: 12px 16px;
+  border-radius: 16px;
+  max-width: 75%;
+  font-size: 0.95rem;
+  white-space: pre-wrap;
 }
 
 .assistantMessage {
   align-self: flex-start;
-  background-color: #f2f2f2;
+  background: #F1F1F1;
+  color: #111;
+  padding: 12px 16px;
+  border-radius: 16px;
+  max-width: 75%;
+  font-size: 0.95rem;
+  white-space: pre-wrap;
 }
 
-.form {
+.inputArea {
   display: flex;
   gap: 10px;
+  margin-top: auto;
+  margin-bottom: 20px;
 }
 
-.input {
-  flex-grow: 1;
-  padding: 12px;
+.inputArea input {
+  flex: 1;
+  padding: 12px 16px;
   font-size: 1rem;
-  border-radius: 8px;
   border: 1px solid #ccc;
-  resize: none;
+  border-radius: 8px;
 }
 
-.send {
-  background: #5c5c5c;
+.inputArea button {
+  background-color: #5C5C5C;
   color: white;
   border: none;
-  padding: 12px 18px;
+  padding: 12px 20px;
   border-radius: 8px;
   cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.inputArea button:hover {
+  background-color: #4a4a4a;
 }
 
 .disclaimer {
-  font-size: 0.75rem;
-  text-align: center;
+  font-size: 0.8rem;
   color: #999;
-  margin-top: 20px;
+  text-align: center;
+  margin-top: 10px;
+  line-height: 1.4;
 }
