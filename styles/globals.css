@@ -1,121 +1,115 @@
-body {
-  margin: 0;
-  padding: 40px 20px;
-  background-color: #D2CDC9;
-  font-family: 'Montserrat', sans-serif;
+.chatContainer {
+  background: #f7f7f8;
+  min-height: 100vh;
+  padding: 40px 0;
   display: flex;
   justify-content: center;
+  align-items: flex-start;
 }
 
-.chat-wrapper {
+.chatBox {
   background: white;
-  padding: 40px;
-  border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
-  max-width: 800px;
+  border-radius: 12px;
+  padding: 30px;
   width: 100%;
+  max-width: 700px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
-  gap: 24px;
 }
 
-h1 {
+.title {
   font-family: 'Anton', sans-serif;
-  color: #5C5C5C;
-  font-size: 2.8rem;
-  margin: 0;
+  font-size: 2.5rem;
+  color: #5c5c5c;
   text-align: center;
+  margin-bottom: 10px;
 }
 
 .subtitle {
-  font-size: 1.2rem;
   text-align: center;
-  color: #5C5C5C;
+  color: #888;
+  font-size: 1rem;
+  margin-bottom: 20px;
 }
 
 .suggestions {
   display: flex;
   flex-wrap: wrap;
+  gap: 10px;
   justify-content: center;
-  gap: 12px;
+  margin-bottom: 20px;
 }
 
 .suggestions button {
-  background-color: #5C5C5C;
-  color: white;
+  background: #f0f0f0;
   border: none;
-  padding: 10px 16px;
-  border-radius: 999px;
+  padding: 10px 15px;
+  border-radius: 20px;
   font-size: 0.9rem;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: 0.2s;
 }
 
 .suggestions button:hover {
-  background-color: #444;
+  background: #e0e0e0;
 }
 
-.chat-box {
+.messages {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  max-height: 400px;
+  gap: 12px;
+  min-height: 200px;
+  margin-bottom: 20px;
+  max-height: 300px;
   overflow-y: auto;
-  border-top: 1px solid #eee;
-  padding-top: 20px;
 }
 
-.message {
-  max-width: 80%;
+.userMessage,
+.assistantMessage {
   padding: 12px 16px;
   border-radius: 12px;
-  line-height: 1.6;
-  font-size: 1rem;
+  max-width: 80%;
+  line-height: 1.5;
   white-space: pre-wrap;
 }
 
-.user {
+.userMessage {
   align-self: flex-end;
-  background-color: #E5E5EA;
+  background-color: #d1d1d1;
 }
 
-.assistant {
+.assistantMessage {
   align-self: flex-start;
-  background-color: #F1F1F1;
+  background-color: #f2f2f2;
 }
 
-.input-area {
+.form {
   display: flex;
   gap: 10px;
-  margin-top: auto;
 }
 
-.input-area input {
-  flex: 1;
+.input {
+  flex-grow: 1;
   padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 12px;
   font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  resize: none;
 }
 
-.input-area button {
-  background-color: #5C5C5C;
+.send {
+  background: #5c5c5c;
   color: white;
   border: none;
-  border-radius: 12px;
-  padding: 12px 20px;
-  font-size: 1rem;
+  padding: 12px 18px;
+  border-radius: 8px;
   cursor: pointer;
-}
-
-.input-area button:hover {
-  background-color: #444;
 }
 
 .disclaimer {
   font-size: 0.75rem;
   text-align: center;
-  color: #666;
+  color: #999;
   margin-top: 20px;
-  line-height: 1.4;
 }
