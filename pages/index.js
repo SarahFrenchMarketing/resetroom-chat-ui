@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import Head from 'next/head';
-import styles from '../styles/globals.module.css'; // Make sure this file includes the CSS we add below
+import styles from '../styles/globals.css'; // Make sure this file includes the CSS we add below
 
 export default function Home() {
   const [messages, setMessages] = useState([]);
